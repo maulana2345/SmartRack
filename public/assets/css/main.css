@@ -1231,7 +1231,7 @@ p {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #5864FF;
+  background: #579EB1;
   position: absolute;
   left: 0;
   top: 6.5px;
@@ -1242,7 +1242,8 @@ p {
 /* ====== feature-extended css ====== */
 .feature-extended-section .feature-extended-wrapper {
   padding: 70px 0;
-  background: rgba(88, 100, 255, 0.1);
+  /* background: rgba(88, 100, 255, 0.1); */
+  background: linear-gradient(90deg, #579EB1 0%, #25434B 100%);
   width: 100vw;
 }
 
@@ -1274,6 +1275,85 @@ p {
 }
 
 .feature-extended-section .single-feature-extended .content p {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 28px;
+}
+
+/* ====== feature-extended-alur css ====== */
+.feature-extended-alur-section {
+  /* position: relative; */
+  width: 100vw;
+  padding: 70px 0 0 0;
+}
+
+
+.feature-extended-alur-wrapper {
+  position: relative;
+  padding: 70px 0;
+  width: 100vw;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.feature-extended-alur-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('/assets/images/login_gudang.jpg') no-repeat center center;
+  background-size: cover;
+  filter: blur(2px); /* Blur di sini */
+  z-index: -1;
+  transform: scale(1.1); /* Untuk mengatasi potongan tepi blur */
+}
+
+.feature-extended-alur-wrapper::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #455A64cc; /* warna dengan opacity 80% */
+  z-index: -1;
+}
+
+.feature-extended-alur-wrapper > * {
+  position: relative;
+  z-index: 2;
+}
+
+.feature-extended-alur-section .single-feature-extended-alur {
+  padding: 30px;
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .feature-extended-alur-section .single-feature-extended-alur {
+    padding: 30px 10px;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .feature-extended-alur-section .single-feature-extended-alur {
+    padding: 30px 0px;
+  }
+}
+
+.feature-extended-alur-section .single-feature-extended-alur .icon {
+  font-size: 65px;
+  line-height: 1;
+  margin-bottom: 30px;
+  color: #5864FF;
+}
+
+.feature-extended-alur-section .single-feature-extended-alur .content h3 {
+  margin-bottom: 20px;
+}
+
+.feature-extended-alur-section .single-feature-extended-alur .content p {
   font-size: 18px;
   font-weight: 400;
   line-height: 28px;

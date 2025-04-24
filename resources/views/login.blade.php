@@ -26,7 +26,7 @@
         }
 
         .login-image {
-            background-image: url('{{ asset('assets/images/Login_SR.png') }}');
+            background-image: url('{{ asset('assets/images/login_gudang.jpg') }}');
             background-size: cover;
             background-position: center;
             height: 100%;
@@ -71,7 +71,7 @@
                         <!-- Logo dan Judul -->
                         <div class="d-flex align-items-center mb-4">
                             <!-- <img src="{{ asset('assets/img/logo/Logo_SmartRack2.png') }}" alt="Logo" class="logo"> -->
-                            <h1>SmartRack</h1>
+                            <h1>Login</h1>
                         </div>
 
                         <!-- Alerts -->
