@@ -281,7 +281,7 @@ p {
 .scroll-top {
   width: 45px;
   height: 45px;
-  background: #B8001F;
+  background: #ff7043;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -307,7 +307,7 @@ p {
 
 .scroll-top:hover {
   color: #fff;
-  background: #D91A3B;
+  background: #25434B;
 }
 
 @keyframes animation1 {
@@ -769,7 +769,7 @@ p {
   padding: 160px 0 50px;
   padding-bottom: 100px;
   /* background-image: url("../img/hero/hero3-bg.jpg"); */
-  background: linear-gradient(to right, #579EB1, #25434B);
+  background: linear-gradient(to right, #009CA6, #579EB1);
   background-position: top center;
   /* background-repeat: no-repeat; */
   background-size: cover;
@@ -882,6 +882,17 @@ p {
 .hero-section .hero-content .scroll-bottom i {
   font-weight: 700;
 }
+
+@keyframes floatY {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-20px); }
+  100% { transform: translateY(0); }
+}
+
+.hero-img img {
+  animation: floatY 3s ease-in-out infinite;
+}
+
 
 @media only screen and (min-width: 768px) and (max-width: 991px), (max-width: 767px) {
   .hero-section .hero-img {
@@ -1242,8 +1253,8 @@ p {
 /* ====== feature-extended css ====== */
 .feature-extended-section .feature-extended-wrapper {
   padding: 70px 0;
-  /* background: rgba(88, 100, 255, 0.1); */
-  background: linear-gradient(90deg, #579EB1 0%, #25434B 100%);
+  background: rgba(88, 100, 255, 0.1);
+  /* background: linear-gradient(90deg, #579EB1 0%, #25434B 100%); */
   width: 100vw;
 }
 

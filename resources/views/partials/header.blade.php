@@ -17,27 +17,26 @@
 
                         <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                             <ul id="nav" class="navbar-nav ms-auto">
-                                <!-- <li class="nav-item">
-                    <a class="page-scroll active" href="#home">Home</a>
-                    </li> -->
                                 <li class="nav-item">
-                                    <a class="page-scroll" href="#features">Kelebihan</a>
+                                    <a class="page-scroll active" href="#home">Beranda</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="page-scroll" href="#about">Tentang</a>
+                                    <a class="page-scroll" href="#features">Fitur Unggulan</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="page-scroll" href="#">Kontak Kami</a>
+                                    <a class="page-scroll" href="#about">Cara Kerja</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="page-scroll" href="#">Tentang Kami</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="page-scroll" href="#why">FAQ</a>
                                 </li>
-                                <li class="nav-item">
+                                <!-- <li class="nav-item">
                                     <a href="/register">Daftar</a>
-                                </li>
+                                </li> -->
                                 <li class="nav-item">
-                                    <a href="/login" style="color: #ff7043">Login <i
-                                            class="fa fa-sign-in-alt"></i></a>
+                                    <a href="/login" style="color: #ff7043">Login <i class="fa fa-sign-in-alt"></i></a>
                                 </li>
                                 <!-- <li class="nav-item">
                       <a href="javascript:void(0)">Clients</a>
