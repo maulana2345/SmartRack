@@ -77,7 +77,7 @@
 
   @include('partials.header')
 
-     @yield('container')
+  @yield('container')
 
 </main>
 

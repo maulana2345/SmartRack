@@ -27,10 +27,10 @@
                                     <a class="page-scroll" href="#about">Cara Kerja</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="page-scroll" href="#">Tentang Kami</a>
+                                    <a class="page-scroll" href="#why">FAQ</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="page-scroll" href="#why">FAQ</a>
+                                    <a class="page-scroll" href="#">Tentang</a>
                                 </li>
                                 <!-- <li class="nav-item">
                                     <a href="/register">Daftar</a>

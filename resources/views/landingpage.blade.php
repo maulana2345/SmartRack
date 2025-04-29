@@ -138,7 +138,7 @@
                 </div>
                 <div class="col-xl-6 col-lg-6 order-first order-lg-last">
                     <div class="about-img-2 wow fadeInUp" data-wow-delay=".2s">
-                        <img src="{{ asset('assets/images/login_gudang.jpg') }}" alt="" class="w-100"
+                        <img src="{{ asset('assets/img/hero/asset_smartrack2.png') }}" alt="" class="w-100"
                             style="border-radius: 12px;" />
                     </div>
                 </div>
@@ -152,7 +152,7 @@
             <div class="row align-items-center">
                 <div class="col-xl-6 col-lg-6">
                     <div class="about-img">
-                        <img src="assets/img/about/about-1.png" alt="" class="w-100" />
+                        <img src="assets/img/hero/asset_ai_hd.png" alt="" class="w-100" style="border-radius: 12px;"/>
                     </div>
                 </div>
                 <div class="col-xl-6 col-lg-6">
@@ -215,7 +215,7 @@
                 </div>
 
                 <button class="accordion">
-                    1. pertanyaan
+                    1.  Apa itu SmartRack?
                 </button>
                 <div class="panel">
                     <p style="font-size: medium">
@@ -226,7 +226,7 @@
                 </div>
 
                 <button class="accordion">
-                    2. pertanyaan
+                    2. Bagaimana SmartRack bekerja?
                 </button>
                 <div class="panel">
                     <p style="font-size: medium">
@@ -237,7 +237,7 @@
                 </div>
 
                 <button class="accordion">
-                    3. pertanyaan
+                    3. Apakah SmartRack bisa terintegrasi dengan sistem gudang yang sudah ada?
                 </button>
                 <div class="panel">
                     <p style="font-size: medium">
@@ -247,7 +247,9 @@
                     </p>
                 </div>
 
-                <button class="accordion">4. pertanyaan</button>
+                <button class="accordion">
+                4. Apakah pengguna gudang perlu pelatihan khusus?
+                </button>
                 <div class="panel">
                     <p style="font-size: medium">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla sapiente provident magni cumque
@@ -262,7 +264,7 @@
     <!-- ======== feature-section end ======== -->
 
     <!-- ======== feature-section alur start ======== -->
-    <section id="why" class="feature-extended-alur-section" style="margin-top: -150px;">
+    <section id="#" class="feature-extended-alur-section" style="margin-top: -150px;">
         <div class="feature-extended-alur-wrapper">
             <div class="container position-relative" style="z-index: 2;">
                 <div class="row justify-content-center">

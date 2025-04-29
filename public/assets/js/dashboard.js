@@ -209,3 +209,99 @@ $(function () {
   };
   new ApexCharts(document.querySelector("#earning"), earning).render();
 })
+
+// Bar April
+new ApexCharts(document.querySelector("#bar-april"), {
+  chart: {
+    type: 'bar',
+    height: 160,
+    toolbar: { show: false }
+  },
+  plotOptions: {
+    bar: {
+      horizontal: false,
+      columnWidth: '45%',
+      borderRadius: 4,
+      dataLabels: {
+        position: 'top'
+      }
+    }
+  },
+  dataLabels: {
+    enabled: true,
+    formatter: function (val) {
+      return val.toLocaleString(); // format angka
+    },
+    offsetY: -10,
+    style: {
+      fontSize: '12px',
+      colors: ["#000", "#000"]
+    }
+  },
+  series: [
+    {
+      name: 'Barang Masuk',
+      data: [13432]
+    },
+    {
+      name: 'Barang Keluar',
+      data: [2162]
+    }
+  ],
+  xaxis: {
+    categories: ['April'],
+    labels: {
+      style: { fontSize: '12px' }
+    },
+    axisBorder: { show: false },
+    axisTicks: { show: false }
+  },
+  yaxis: {
+    show: false
+  },
+  legend: {
+    position: 'bottom',
+    fontSize: '12px'
+  },
+  colors: ['#1e88e5', '#f1c40f'],
+  grid: {
+    padding: { top: 10, bottom: -10, left: 0, right: 0 }
+  }
+}).render();
+
+
+// Sales Chart
+new ApexCharts(document.querySelector("#sales-chart"), {
+  chart: {
+    type: 'line',
+    height: '450', // Penting untuk isi penuh
+    toolbar: { show: true }
+  },
+  series: [
+    { name: "Penjualan", data: [12000, 15000, 14000, 18000, 17000, 20000, 22000, 21000, 25000, 26000, 24000, 27000] },
+    { name: "Pembelian", data: [10000, 11000, 12000, 13000, 12500, 14500, 15000, 14000, 15500, 16500, 16000, 17000] }
+  ],
+  xaxis: {
+    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  },
+  colors: ['#1e88e5', '#f1c40f'],
+  grid: { padding: { top: 10, bottom: 10, left: 10, right: 10 } },
+  stroke: { width: 3 }
+}).render();
+
+
+// Pie Fast
+new ApexCharts(document.querySelector("#pie-fast"), {
+  chart: { type: 'donut' },
+  series: [44, 25, 15, 16],
+  labels: ['Benih', 'Pupuk', 'Obat', 'Makanan'],
+  colors: ['#1e88e5', '#26c6da', '#745af2', '#f1c40f']
+}).render();
+
+// Pie Slow
+new ApexCharts(document.querySelector("#pie-slow"), {
+  chart: { type: 'donut' },
+  series: [20, 30, 25, 25],
+  labels: ['Benih', 'Pupuk', 'Obat', 'Makanan'],
+  colors: ['#ff5c8e', '#26c6da', '#745af2', '#f1c40f']
+}).render();
