@@ -25,8 +25,15 @@ Route::get('/', [HomeController::class, 'index']);
 //     Route::get('/logout', 'logout');
 // });
 
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
+// Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+// Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+
+// Tambahkan agar GET /login redirect ke halaman utama (landing page)
+Route::get('/login', function () {
+    return redirect('/');
+})->name('login');
+
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/dashboard', function () {
     return view('dashboard.index');

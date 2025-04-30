@@ -36,7 +36,7 @@
                                     <a href="/register">Daftar</a>
                                 </li> -->
                                 <li class="nav-item">
-                                    <a href="/login" style="color: #ff7043">Login <i class="fa fa-sign-in-alt"></i></a>
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" class="nav-link" style="color: #ff7043">Login <i class="fa fa-sign-in-alt"></i></a>
                                 </li>
                                 <!-- <li class="nav-item">
                       <a href="javascript:void(0)">Clients</a>

@@ -41,7 +41,7 @@
                             Sistem manajemen gudang berbasis AI yang membuat gudang lebih rapi, efisien, dan
                             produktif. Lebih cepat, lebih rapi, lebih smart!
                         </p>
-                        <a href="/dashboard" class="main-btn border-btn btn-hover wow fadeInUp" data-wow-delay=".6s">Mulai
+                        <a href="/dashboard" data-bs-toggle="modal" data-bs-target="#loginModal" class="main-btn border-btn btn-hover wow fadeInUp" data-wow-delay=".6s">Mulai
                             Sekarang!</a>
                     </div>
                 </div>
@@ -264,7 +264,7 @@
     <!-- ======== feature-section end ======== -->
 
     <!-- ======== feature-section alur start ======== -->
-    <section id="#" class="feature-extended-alur-section" style="margin-top: -150px;">
+    <!-- <section id="#" class="feature-extended-alur-section">
         <div class="feature-extended-alur-wrapper">
             <div class="container position-relative" style="z-index: 2;">
                 <div class="row justify-content-center">
@@ -294,7 +294,9 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
     <!-- ======== feature-section alur end ======== -->
+
+    @include('login-modal')
 
 @endsection

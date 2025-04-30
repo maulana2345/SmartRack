@@ -1,7 +1,7 @@
 @extends('dashboard.main')
 
 @section('content')
-<div class="row g-3 mb-4">
+<div class="row g-3 mb-4 mt-1">
   <!-- KIRI: 4 card kecil -->
   <div class="col-lg-8 d-flex flex-column justify-content-between">
     <!-- 2 card atas -->
@@ -14,13 +14,13 @@
           <div class="d-flex justify-content-between small text-muted mb-1">
             <span>Fast moving</span><span>827.126</span>
           </div>
-          <div class="progress mb-3" style="height: 45px;">
+          <div class="progress mb-3" style="height: 30px;">
             <div class="progress-bar bg-primary" role="progressbar" style="width: 64%"></div>
           </div>
           <div class="d-flex justify-content-between small text-muted mb-1">
             <span>Slow moving</span><span>466.361</span>
           </div>
-          <div class="progress" style="height: 45px;">
+          <div class="progress" style="height: 30px;">
             <div class="progress-bar bg-warning" role="progressbar" style="width: 36%"></div>
           </div>
         </div>
@@ -29,14 +29,14 @@
       <!-- April -->
       <div class="col-md-6 d-flex align-items-stretch">
         <div class="card p-3 w-100" style="min-height: 150px;">
-          <h6 class="text-muted">April</h6>
+          <!-- <h6 class="text-muted">April</h6> -->
           <div class="d-flex justify-content-between mb-0">
             <div>
-              <p class="mb-1 text-muted">Barang masuk</p>
+              <h6 class="mb-1 text-muted">Barang masuk</>
               <h4 class="fw-bold text-primary">13.432</h4>
             </div>
             <div>
-              <p class="mb-1 text-muted">Barang keluar</p>
+              <h6 class="mb-1 text-muted">Barang keluar</>
               <h4 class="fw-bold text-warning">2.162</h4>
             </div>
           </div>
