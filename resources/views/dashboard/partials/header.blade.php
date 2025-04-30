@@ -35,7 +35,14 @@
                                 <i class="ti ti-list-check fs-6"></i>
                                 <p class="mb-0 fs-3">My Task</p>
                             </a>
-                            <a href="{{ url('/logout') }}" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                            <!-- <a href="{{ url('/logout') }}" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a> -->
+                            <form method="POST" action="{{ url('/logout') }}">
+                                @csrf
+                                <button type="submit" class="btn btn-outline-primary mx-3 mt-2 d-block">
+                                    <!-- <i class="ti ti-logout fs-6"></i> -->
+                                    <p class="mb-0 fs-3">Logout</p>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </li>

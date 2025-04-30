@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BarangController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\DashboardController;
@@ -34,5 +35,7 @@ Route::get('/dashboard', function () {
 // Register routes
 Route::get('/register', [RegisterController::class, 'show'])->name('register');
 Route::post('/register', [RegisterController::class, 'store']);
+
+Route::get('/barang', [BarangController::class, 'index'])->name('barang');
 
 // Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
