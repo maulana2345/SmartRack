@@ -7,10 +7,9 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardHistoryController;
-use App\Http\Controllers\GrafikController;
-use App\Http\Controllers\KoiDetectionController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\PenyimpananController;
 
 Route::get('/', [HomeController::class, 'index']);
 
@@ -43,6 +42,8 @@ Route::get('/dashboard', function () {
 Route::get('/register', [RegisterController::class, 'show'])->name('register');
 Route::post('/register', [RegisterController::class, 'store']);
 
-Route::get('/barang', [BarangController::class, 'index'])->name('barang');
-
+// Route::get('/barang', [BarangController::class, 'index'])->name('barang');
+Route::resource('barang', BarangController::class);
 // Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
+
+Route::resource('penyimpanan', PenyimpananController::class);

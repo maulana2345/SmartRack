@@ -31,15 +31,21 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ url('/rekomendasi') }}">
+                    <a class="sidebar-link" href="{{ url('/penyimpanan') }}">
                         <i class="ti ti-cards"></i>
-                        <span class="hide-menu">Rekomendasi</span>
+                        <span class="hide-menu">Penyimpanan</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ url('/log') }}">
                         <i class="ti ti-file-description"></i>
                         <span class="hide-menu">Log Aktivitas</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ url('/#') }}">
+                        <i class="ti ti-user"></i>
+                        <span class="hide-menu">Pengguna</span>
                     </a>
                 </li>
             </ul>

@@ -43,12 +43,15 @@ return new class extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->id('id');
             $table->string('nama_barang');
-            $table->string('kategori');
-            $table->integer('stok');
-            $table->string('ukuran');
-            $table->float('berat');
+            $table->enum('satuan', ['btl', 'pcs', 'pack']);
+            $table->enum('kelompok', ['obat', 'pupuk', 'benih']);
+            $table->string('jenis');
+            $table->date('tgl_kadaluarsa');
+            $table->integer('qty');
+            $table->float('dimensi',);
             $table->timestamps();
         });
+        
 
         // Storage details table (detail_penyimpanan)
         Schema::create('storage_details', function (Blueprint $table) {
@@ -77,7 +80,13 @@ return new class extends Migration
      * Reverse the migrations.
      */
     public function down(): void
-    {
-        Schema::dropIfExists('smart_rack_tables');
-    }
+{
+    Schema::dropIfExists('recommendations');
+    Schema::dropIfExists('storage_details');
+    Schema::dropIfExists('items');
+    Schema::dropIfExists('racks');
+    Schema::dropIfExists('activity_logs');
+    Schema::dropIfExists('user');
+}
+
 };
