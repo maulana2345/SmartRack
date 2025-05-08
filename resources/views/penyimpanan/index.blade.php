@@ -62,13 +62,18 @@
         }
 
         .penuh {
-            background-color: #333;
+            background-color: #073B4C;
         }
 
         .rak-card {
             background-color: #d4f8e8;
             border-radius: 10px;
             padding: 12px 16px;
+        }
+
+        .divider {
+            border-top: 1px solid #e0e0e0;
+            margin: 1.5rem 0;
         }
 
         #rakPopover::before {
@@ -134,20 +139,30 @@
             </div>
 
             <!-- Pintu -->
-            <div class="text-center mt-4">
+            <div class="d-flex justify-content-between mt-4">
                 <small class="text-muted">Pintu Masuk</small>
+                <small class="text-muted">Pintu Keluar</small>
             </div>
+            
         </div>
 
         <!-- Detail Rak + Rekomendasi AI -->
-        <div class="card p-4" style="min-width: 300px;">
-            <h6 class="fw-bold mb-2">Rekomendasi Penempatan (AI)</h6>
+        <div class="card p-4" style="min-width: 320px;">
+            <h5 class="fw-bold mb-3 text-primary">Rekomendasi Penempatan (AI)</h5>
 
+            <!-- Rekomendasi AI -->
             <form id="rekomendasiForm" class="mb-3">
-                <div class="mb-2">
-                    <label for="item_name" class="form-label">Nama Barang</label>
+                <div class="mb-3">
+                    <label for="item_name" class="form-label">Kode/Nama Barang</label>
                     <input type="text" id="item_name" name="item_name" class="form-control"
-                        placeholder="Contoh: Jagung BISI" required>
+                        placeholder="Contoh: QJAGU03/Jagung BISI" required>
+                </div>
+                <div class="row mb-2">
+                    <div class="col">
+                        <label class="form-label">Quantity</label>
+                        <input type="number" id="item_name" name="item_name" class="form-control"
+                            placeholder="Contoh: 100" required>
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary w-100">Rekomendasikan Lokasi</button>
             </form>
@@ -163,12 +178,22 @@
                 Taruh Barang di Lokasi Ini
             </button>
 
-            <h6 class="fw-bold mt-4">Penempatan Manual</h6>
-            <form id="manualForm">
-                <div class="mb-2">
-                    <label for="manual_item_name" class="form-label">Nama Barang</label>
-                    <input type="text" id="manual_item_name" class="form-control" placeholder="Contoh: Jagung BISI"
+            <div class="divider"></div>
+
+            <!-- Penempatan Manual -->
+            <h5 class="fw-bold mb-3 text-warning">Penempatan Manual</h5>
+            <form id="manualForm" class="mb-3">
+                <div class="mb-3">
+                    <label for="manual_item_name" class="form-label">Kode/Nama Barang</label>
+                    <input type="text" id="manual_item_name" class="form-control" placeholder="Contoh: QJAGU03/Jagung BISI"
                         required>
+                </div>
+                <div class="row mb-2">
+                    <div class="col">
+                        <label class="form-label">Quantity</label>
+                        <input type="number" id="item_name" name="item_name" class="form-control"
+                            placeholder="Contoh: 100" required>
+                    </div>
                 </div>
                 <div class="row mb-2">
                     <div class="col">
@@ -188,16 +213,27 @@
                         </select>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-secondary w-100">Simpan ke Lokasi</button>
+                <button type="submit" class="btn btn-warning w-100">Simpan ke Lokasi</button>
             </form>
 
-            <h6 class="fw-bold mt-4">Pengeluaran Barang</h6>
-            <form id="hapusBarangForm">
-                <div class="mb-2">
-                    <label for="manual_item_name" class="form-label">Nama Barang</label>
-                    <input type="text" id="hapus_item_name" class="form-control" placeholder="Contoh: Fan Nozzle" required>
+            <div class="divider"></div>
+
+            <!-- Pengeluaran Barang -->
+            <h5 class="fw-bold mb-3 text-danger">Pengeluaran Barang</h5>
+            <form id="hapusBarangForm" class="mb-3">
+                <div class="mb-3">
+                    <label for="manual_item_name" class="form-label">Kode/Nama Barang</label>
+                    <input type="text" id="hapus_item_name" class="form-control" placeholder="Contoh: QJAGU03/Jagung BISI"
+                        required>
                 </div>
-                <div class="mb-2 d-flex gap-2">
+                <div class="row mb-2">
+                    <div class="col">
+                        <label class="form-label">Quantity</label>
+                        <input type="number" id="item_name" name="item_name" class="form-control"
+                            placeholder="Contoh: 100" required>
+                    </div>
+                </div>
+                <div class="row mb-2">
                     <div class="col">
                         <label class="form-label">Rak</label>
                         <select id="hapus_rak" class="form-select">
@@ -247,12 +283,12 @@
             el.classList.add('active');
 
             popover.innerHTML = `
-                                <p class="fw-bold text-success mb-1">${rak}, ${level}</p>
-                                <small>Kantong Plastik Bening Besar — 150</small><br>
-                                <small>Ambassador Vegetable 10 X 1 Ltr — 266</small><br>
-                                <small>Fan Nozzle — 20</small>
-                                <div class="text-end mt-2"><small>Aktivitas terakhir: 04/05/2025</small></div>
-                            `;
+                                                <p class="fw-bold text-success mb-1">${rak}, ${level}</p>
+                                                <small>QJAGU03 - Jagung BISI</small><br>
+                                                <small>AAFON01 - Afonil 50 SC 40 X 250 ml</small><br>
+                                                <small>AARIZ01 - Arizona 55 EC 80 ml</small>
+                                                <div class="text-end mt-2"><small>Aktivitas terakhir: 04/05/2025</small></div>
+                                            `;
 
             const rect = el.getBoundingClientRect();
             const scrollTop = window.scrollY || document.documentElement.scrollTop;

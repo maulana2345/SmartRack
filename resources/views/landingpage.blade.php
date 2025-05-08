@@ -27,7 +27,7 @@
             <div class="row align-items-center position-relative">
                 <div class="col-lg-6 d-flex justify-content-center align-items-center" style="margin-top: -60px;">
                     <div class="hero-img" style="transform: scaleX(-1);">
-                        <img src="{{ asset('assets/img/hero/Gerobak.png') }}" alt="" />
+                        <img src="{{ asset('assets/img/hero/GerobakOrange.png') }}" alt="" />
                     </div>
                 </div>
                 <div class="col-lg-6">

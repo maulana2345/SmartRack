@@ -10,6 +10,8 @@ use App\Http\Controllers\DashboardHistoryController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\PenyimpananController;
+use App\Http\Controllers\PenggunaController;
+use App\Http\Controllers\LogController;
 
 Route::get('/', [HomeController::class, 'index']);
 
@@ -47,3 +49,5 @@ Route::resource('barang', BarangController::class);
 // Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 
 Route::resource('penyimpanan', PenyimpananController::class);
+Route::resource('user', PenggunaController::class);
+Route::resource('log', LogController::class);

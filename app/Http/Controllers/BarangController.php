@@ -4,12 +4,46 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class BarangController extends Controller
 {
-    public function index()
+    // public function index()
+    // {
+    //     $items = Item::all();
+    //     return view('barang.index', compact('items'));
+    // }
+
+    public function index(Request $request)
     {
-        $items = Item::all();
+        $query = Item::query();
+
+        // Search global (nama_barang, jenis, kelompok)
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('nama_barang', 'like', '%' . $request->search . '%')
+                    ->orWhere('jenis', 'like', '%' . $request->search . '%')
+                    ->orWhere('kelompok', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        // Filter berdasarkan kelompok
+        if ($request->filled('kelompok')) {
+            $query->where('kelompok', $request->kelompok);
+        }
+
+        // Filter berdasarkan satuan
+        if ($request->filled('satuan')) {
+            $query->where('satuan', $request->satuan);
+        }
+
+        // Filter berdasarkan tanggal kadaluarsa sebelum hari ini
+        if ($request->has('kadaluarsa') && $request->kadaluarsa === '1') {
+            $query->whereDate('tgl_kadaluarsa', '<', now());
+        }
+
+        $items = $query->paginate(10)->withQueryString();
+
         return view('barang.index', compact('items'));
     }
 
@@ -21,6 +55,7 @@ class BarangController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'kode_barang' => 'required|unique:items,kode_barang',
             'nama_barang' => 'required',
             'satuan' => 'required|in:btl,pcs,pack',
             'kelompok' => 'required|in:obat,pupuk,benih',
@@ -29,6 +64,7 @@ class BarangController extends Controller
             'qty' => 'required|integer',
             'dimensi' => 'required|numeric',
         ]);
+
 
         Item::create($request->all());
 
@@ -44,6 +80,7 @@ class BarangController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
+            'kode_barang' => 'required|unique:items,kode_barang,' . $id,
             'nama_barang' => 'required',
             'satuan' => 'required|in:btl,pcs,pack',
             'kelompok' => 'required|in:obat,pupuk,benih',

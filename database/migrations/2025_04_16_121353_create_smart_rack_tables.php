@@ -42,6 +42,7 @@ return new class extends Migration
         // Items table (barang)
         Schema::create('items', function (Blueprint $table) {
             $table->id('id');
+            $table->string('kode_barang')->unique();
             $table->string('nama_barang');
             $table->enum('satuan', ['btl', 'pcs', 'pack']);
             $table->enum('kelompok', ['obat', 'pupuk', 'benih']);

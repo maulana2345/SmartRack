@@ -43,7 +43,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ url('/#') }}">
+                    <a class="sidebar-link" href="{{ url('/user') }}">
                         <i class="ti ti-user"></i>
                         <span class="hide-menu">Pengguna</span>
                     </a>

@@ -1,4 +1,10 @@
 <div class="mb-3">
+    <label>Kode Barang</label>
+    <input type="text" name="kode_barang" class="form-control"
+        value="{{ old('kode_barang', $item->kode_barang ?? '') }}" required>
+</div>
+
+<div class="mb-3">
     <label>Nama Barang</label>
     <input type="text" name="nama_barang" class="form-control" value="{{ old('nama_barang', $item->nama_barang ?? '') }}" required>
 </div>
