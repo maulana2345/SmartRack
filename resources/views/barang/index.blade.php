@@ -93,8 +93,9 @@
                                     <th>Nama Barang</th>
                                     <th>Kelompok</th>
                                     <th>Jenis</th>
-                                    <th>QTY</th>
                                     <th>Satuan</th>
+                                    <th>QTY</th>
+                                    <th>Dimensi</th>
                                     <th>Tgl Kadaluarsa</th>
                                     <th>Aksi</th> <!-- Kolom Aksi -->
                                 </tr>
@@ -106,8 +107,9 @@
                                         <td>{{ $item->nama_barang }}</td>
                                         <td>{{ $item->kelompok }}</td>
                                         <td>{{ $item->jenis }}</td>
-                                        <td>{{ $item->qty }}</td>
                                         <td>{{ $item->satuan }}</td>
+                                        <td>{{ $item->qty }}</td>
+                                        <td>{{ $item->dimensi }}</td>
                                         <td>{{ $item->tgl_kadaluarsa }}</td>
                                         <td>
                                             <a href="{{ route('barang.edit', $item->id) }}" class="btn btn-sm btn-warning"
