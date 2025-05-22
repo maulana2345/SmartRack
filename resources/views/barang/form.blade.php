@@ -6,7 +6,8 @@
 
 <div class="mb-3">
     <label>Nama Barang</label>
-    <input type="text" name="nama_barang" class="form-control" value="{{ old('nama_barang', $item->nama_barang ?? '') }}" required>
+    <input type="text" name="nama_barang" class="form-control"
+        value="{{ old('nama_barang', $item->nama_barang ?? '') }}" required>
 </div>
 
 <div class="mb-3">
@@ -34,7 +35,8 @@
 
 <div class="mb-3">
     <label>Tanggal Kadaluarsa</label>
-    <input type="date" name="tgl_kadaluarsa" class="form-control" value="{{ old('tgl_kadaluarsa', $item->tgl_kadaluarsa ?? '') }}" required>
+    <input type="date" name="tgl_kadaluarsa" class="form-control"
+        value="{{ old('tgl_kadaluarsa', $item->tgl_kadaluarsa ?? '') }}" required>
 </div>
 
 <div class="mb-3">
@@ -44,5 +46,19 @@
 
 <div class="mb-3">
     <label>Dimensi</label>
-    <input type="number" step="0.01" name="dimensi" class="form-control" value="{{ old('dimensi', $item->dimensi ?? '') }}" required>
+    <input type="number" step="0.01" name="dimensi" class="form-control"
+        value="{{ old('dimensi', $item->dimensi ?? '') }}" required>
+</div>
+
+<div class="mb-3">
+    <label>Kategori</label>
+    <select name="category_id" class="form-select" required>
+        <option value="">Pilih Kategori</option>
+        @foreach($categories as $category)
+            <option value="{{ $category->id }}" 
+                    @selected(old('category_id', $item->category_id ?? '') == $category->id)>
+                {{ $category->tipe_kategori }}
+            </option>
+        @endforeach
+    </select>
 </div>

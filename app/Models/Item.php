@@ -20,5 +20,11 @@ class Item extends Model
         'tgl_kadaluarsa',
         'qty',
         'dimensi',
+        'category_id',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);  // Menyatakan bahwa Item milik satu Category
+    }
 }

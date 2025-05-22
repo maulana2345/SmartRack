@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -49,7 +50,8 @@ class BarangController extends Controller
 
     public function create()
     {
-        return view('barang.create');
+        $categories = Category::all();  // Ambil semua kategori
+        return view('barang.create', compact('categories'));  // Kirim data kategori ke form
     }
 
     public function store(Request $request)
@@ -63,9 +65,10 @@ class BarangController extends Controller
             'tgl_kadaluarsa' => 'required|date',
             'qty' => 'required|integer',
             'dimensi' => 'required|numeric',
+            'category_id' => 'required|exists:categories,id', // Validasi category_id
         ]);
 
-
+        // Menyimpan data barang
         Item::create($request->all());
 
         return redirect()->route('barang.index')->with('success', 'Data berhasil ditambahkan!');
@@ -74,7 +77,8 @@ class BarangController extends Controller
     public function edit($id)
     {
         $item = Item::findOrFail($id);
-        return view('barang.edit', compact('item'));
+        $categories = Category::all();  // Ambil semua kategori
+        return view('barang.edit', compact('item', 'categories'));  // Kirim data kategori ke form
     }
 
     public function update(Request $request, $id)
@@ -88,6 +92,7 @@ class BarangController extends Controller
             'tgl_kadaluarsa' => 'required|date',
             'qty' => 'required|integer',
             'dimensi' => 'required|numeric',
+            'category_id' => 'required|exists:categories,id', // Validasi category_id
         ]);
 
         $item = Item::findOrFail($id);

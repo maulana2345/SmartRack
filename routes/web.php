@@ -2,40 +2,23 @@
 
 use App\Http\Controllers\BarangController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MonitoringController;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\DashboardHistoryController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\PenyimpananController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\LogController;
 
+// Login
 Route::get('/', [HomeController::class, 'index']);
-
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-// Login routes
-// Route::controller(LoginController::class)->group(function () {
-//     Route::get('/login', 'index')->name('login')->middleware('guest');
-//     Route::post('/login', 'authenticate');
-//     Route::get('/logout', 'logout');
-// });
-
-// Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-// Route::post('/login', [AuthController::class, 'login']);
 Route::post('/login', [AuthController::class, 'login'])->name('login');
-
 // Tambahkan agar GET /login redirect ke halaman utama (landing page)
 Route::get('/login', function () {
     return redirect('/');
-})->name('login');
-
+})->name('login-redirect');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Dashboard
 Route::get('/dashboard', function () {
     return view('dashboard.index');
 })->middleware('auth');
@@ -51,3 +34,10 @@ Route::resource('barang', BarangController::class);
 Route::resource('penyimpanan', PenyimpananController::class);
 Route::resource('user', PenggunaController::class);
 Route::resource('log', LogController::class);
+
+// Route::post('/rekomendasi-lokasi', [PenyimpananController::class, 'rekomendasiLokasi']);
+Route::post('/rekomendasi-lokasi', [PenyimpananController::class, 'rekomendasiLokasi'])->name('penyimpanan.rekomendasi');
+// Route::post('/penyimpanan/rekomendasi-lokasi', [PenyimpananController::class, 'rekomendasiLokasi']);
+// Route::post('/penyimpanan/manual-placement', [PenyimpananController::class, 'storePlacement'])->name('penyimpanan.manualPlacement');
+Route::post('/penyimpanan/manual-placement', [PenyimpananController::class, 'storePlacement']);
+Route::post('/penyimpanan/hapus-barang', [PenyimpananController::class, 'removePlacement'])->name('penyimpanan.removePlacement');

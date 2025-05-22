@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>SmartRack | {{ $title }}</title>
     <!-- <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script> -->
     <!-- <script>
@@ -64,6 +65,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/animate.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/footer.css') }}">
+
 
     <!-- ===============================================-->
     <!--    Stylesheets-->

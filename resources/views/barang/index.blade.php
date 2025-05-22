@@ -18,14 +18,14 @@
                         <form action="#" method="POST" enctype="multipart/form-data">
                             @csrf
                             <label for="importExcel" class="btn btn-warning mb-0">
-                                <i class="fas fa-file-import me-1"></i> Import Excel
+                                <i class="fas fa-file-import me-1"></i> Import CSV
                             </label>
                             <input type="file" id="importExcel" name="file" accept=".xlsx,.xls" style="display:none"
                                 onchange="this.form.submit()">
                         </form>
                         <!-- Tombol Export Excel -->
                         <a href="#" class="btn btn-success text-white">
-                            <i class="fas fa-file-export me-1"></i> Export Excel
+                            <i class="fas fa-file-export me-1"></i> Export CSV
                         </a>
                     </div>
 
@@ -96,6 +96,7 @@
                                     <th>Satuan</th>
                                     <th>QTY</th>
                                     <th>Dimensi</th>
+                                    <th>Kategori</th>
                                     <th>Tgl Kadaluarsa</th>
                                     <th>Aksi</th> <!-- Kolom Aksi -->
                                 </tr>
@@ -110,6 +111,7 @@
                                         <td>{{ $item->satuan }}</td>
                                         <td>{{ $item->qty }}</td>
                                         <td>{{ $item->dimensi }}</td>
+                                        <td>{{ $item->category ? $item->category->tipe_kategori : 'N/A' }}</td> <!-- Menampilkan kategori -->
                                         <td>{{ $item->tgl_kadaluarsa }}</td>
                                         <td>
                                             <a href="{{ route('barang.edit', $item->id) }}" class="btn btn-sm btn-warning"
