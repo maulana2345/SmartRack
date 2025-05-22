@@ -37,7 +37,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ url('/log') }}">
+                    <a class="sidebar-link" href="{{ url('/log-aktivitas') }}">
                         <i class="ti ti-file-description"></i>
                         <span class="hide-menu">Log Aktivitas</span>
                     </a>

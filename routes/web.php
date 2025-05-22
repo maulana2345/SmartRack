@@ -33,7 +33,9 @@ Route::resource('barang', BarangController::class);
 
 Route::resource('penyimpanan', PenyimpananController::class);
 Route::resource('user', PenggunaController::class);
-Route::resource('log', LogController::class);
+// Route::resource('/log-aktivitas', LogController::class);
+Route::get('/log-aktivitas', [LogController::class, 'index'])->name('log.index');
+
 
 // Route::post('/rekomendasi-lokasi', [PenyimpananController::class, 'rekomendasiLokasi']);
 Route::post('/rekomendasi-lokasi', [PenyimpananController::class, 'rekomendasiLokasi'])->name('penyimpanan.rekomendasi');
