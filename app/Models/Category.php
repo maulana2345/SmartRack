@@ -3,12 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Category extends Model
 {
-    // Menambahkan relasi hasMany ke Item
+    use HasFactory;
+
+    protected $table = 'categories';
+
+    protected $fillable = ['tipe_kategori'];
+
     public function items()
     {
-        return $this->hasMany(Item::class);  // Menyatakan bahwa Category bisa memiliki banyak Item
+        return $this->hasMany(Item::class, 'category_id');
     }
 }

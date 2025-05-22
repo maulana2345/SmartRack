@@ -34,7 +34,7 @@ class PenyimpananController extends Controller
                 ], 404);
             }
 
-            $kategori = strtolower($item->category->nama ?? 'fast');
+            $kategori = strtolower($item->category->tipe_kategori ?? 'fast');
             $rakData = Rak::select('kode_rak', 'kapasitas_tersedia', 'kapasitas_max', 'jarak')->get();
 
             \Log::info("KATEGORI ITEM:", [
