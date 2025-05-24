@@ -2,13 +2,55 @@
 
 @section('content')
     <style>
-        svg:not(.apexcharts-svg):not(.chartjs-size-monitor),
-        .ti-arrow-left,
-        .ti-arrow-right {
+        /* Pastikan SEMUA SVG panah besar tidak tampil */
+        svg:not(.apexcharts-svg):not(.chartjs-size-monitor) {
             display: none !important;
         }
-    </style>
 
+        /* Seringkali icon panah dari font icon library pakai pseudo:before */
+        .ti-arrow-left,
+        .ti-arrow-right,
+        .bi-chevron-left,
+        .bi-chevron-right,
+        .fa-chevron-left,
+        .fa-chevron-right,
+        .feather-chevron-left,
+        .feather-chevron-right {
+            display: none !important;
+        }
+
+        /* Jika panahnya berupa inline SVG <path> */
+        .simplebar-content>svg,
+        .simplebar-track>svg,
+        .simplebar-track .simplebar-scrollbar>svg {
+            display: none !important;
+        }
+
+        .pagination {
+            gap: 0.25rem;
+            /* jarak antar halaman */
+        }
+
+        .pagination li {
+            margin: 0;
+        }
+
+        .pagination li a,
+        .pagination li span {
+            padding: 6px 10px;
+            font-size: 0.85rem;
+            border-radius: 4px;
+        }
+
+        /* Tambahkan padding agar info "Showing..." sejajar */
+        .pagination-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+    </style>
 
     <div class="container-fluid">
         <div class="card">
@@ -72,8 +114,8 @@
                     </div>
 
                     <!-- Pagination -->
-                    <div class="d-flex justify-content-end">
-                        {{ $logs->links() }}
+                    <div class="mt-3 px-2">
+                        {{ $logs->onEachSide(1)->links('vendor.pagination.tailwind') }}
                     </div>
 
                 </div>

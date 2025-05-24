@@ -188,7 +188,8 @@
 
             <!-- Penempatan Manual -->
             <h5 class="fw-bold mb-3 text-warning">Penempatan Manual</h5>
-            <form id="manualForm" class="mb-3">
+            <form id="manualForm" class="mb-3" method="POST" action="/penyimpanan/manual-placement">
+                @csrf
                 <div class="mb-3">
                     <label for="manual_item_name" class="form-label">Kode/Nama Barang</label>
                     <input type="text" id="manual_item_name" class="form-control" placeholder="Contoh: QJAGU03/Jagung BISI"
@@ -197,7 +198,7 @@
                 <div class="row mb-2">
                     <div class="col">
                         <label class="form-label">Quantity</label>
-                        <input type="number" id="item_name" name="item_name" class="form-control" placeholder="Contoh: 100"
+                        <input type="number" id="manual_quantity" name="quantity" class="form-control" placeholder="Contoh: 100"
                             required>
                     </div>
                 </div>
@@ -231,7 +232,8 @@
 
             <!-- Pengeluaran Barang -->
             <h5 class="fw-bold mb-3 text-danger">Pengeluaran Barang</h5>
-            <form id="hapusBarangForm" class="mb-3">
+            <form id="hapusBarangForm" class="mb-3" method="POST" action="/penyimpanan/hapus-barang">
+                @csrf
                 <div class="mb-3">
                     <label for="manual_item_name" class="form-label">Kode/Nama Barang</label>
                     <input type="text" id="hapus_item_name" class="form-control" placeholder="Contoh: QJAGU03/Jagung BISI"
@@ -240,7 +242,7 @@
                 <div class="row mb-2">
                     <div class="col">
                         <label class="form-label">Quantity</label>
-                        <input type="number" id="item_name" name="item_name" class="form-control" placeholder="Contoh: 100"
+                        <input type="number" id="hapus_quantity" name="quantity" class="form-control" placeholder="Contoh: 100"
                             required>
                     </div>
                 </div>
@@ -269,7 +271,6 @@
                 </div>
                 <button type="submit" class="btn btn-danger w-100">Keluarkan Barang</button>
             </form>
-
         </div>
 
         <!-- Modal Detail Rak -->
@@ -291,7 +292,6 @@
 
     <script>
         // Skrip JS untuk fitur penyimpanan dan pewarnaan rak
-
         function showDetail(el) {
             const kodeRak = el.getAttribute('data-kode') || (el.getAttribute('data-rak') + (el.getAttribute('data-level') === '1' ? 'L01' : 'L02'));
             document.querySelectorAll('.grid-box').forEach(box => box.classList.remove('active'));
@@ -327,9 +327,9 @@
                         html += `<ul class="list-group">`;
                         data.storage.forEach(item => {
                             html += `<li class="list-group-item d-flex justify-content-between align-items-center">
-                ${item.nama_barang} (${item.kode_barang})
-                <span class="badge bg-primary rounded-pill">${item.jumlah} ${item.satuan}</span>
-              </li>`;
+                    ${item.nama_barang} (${item.kode_barang})
+                    <span class="badge bg-primary rounded-pill">${item.jumlah} ${item.satuan}</span>
+                  </li>`;
                         });
                         html += `</ul>`;
                         modalContent.innerHTML = html;
@@ -452,8 +452,89 @@
                         alert('Gagal menyimpan data.');
                     });
             });
-        });
 
+            // === Handler Penempatan Manual ===
+            document.getElementById('manualForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const itemName = document.getElementById('manual_item_name').value.trim();
+                const quantity = document.getElementById('manual_quantity').value.trim();  // ini field 'quantity'
+                const rak = document.getElementById('manual_rak').value;
+                const level = document.getElementById('manual_level').value;
+
+                if (!itemName || !quantity || isNaN(quantity) || Number(quantity) <= 0) {
+                    alert('Mohon isi data penempatan manual dengan benar.');
+                    return;
+                }
+                const rakKode = rak + (level === '1' ? 'L01' : 'L02');
+                fetch('/penyimpanan/manual-placement', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({
+                        item_name: itemName,
+                        quantity: quantity,
+                        rak: rakKode,
+                        level: parseInt(level)
+                    })
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.error) return alert('Error: ' + data.error);
+                        alert(data.success);
+                        kapasitasRak[rakKode] = data.kapasitas_tersedia;
+                        updateRakColors();
+                        this.reset();
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        alert('Terjadi error saat menyimpan penempatan manual.');
+                    });
+            });
+
+            // === Handler Pengeluaran Barang ===
+            document.getElementById('hapusBarangForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const itemName = document.getElementById('hapus_item_name').value.trim();
+                const quantity = document.getElementById('hapus_quantity').value.trim();
+                const rak = document.getElementById('hapus_rak').value;
+                const level = document.getElementById('hapus_level').value;
+
+                if (!itemName || !quantity || isNaN(quantity) || Number(quantity) <= 0) {
+                    alert('Mohon isi data pengeluaran barang dengan benar.');
+                    return;
+                }
+                const rakKode = rak + (level === '1' ? 'L01' : 'L02');
+                fetch('/penyimpanan/hapus-barang', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({
+                        item_name: itemName,
+                        quantity: quantity,
+                        rak: rakKode,
+                        level: parseInt(level)
+                    })
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.error) return alert('Error: ' + data.error);
+                        alert(data.success);
+                        kapasitasRak[rakKode] = data.kapasitas_tersedia;
+                        updateRakColors();
+                        this.reset();
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        alert('Terjadi error saat menghapus barang.');
+                    });
+            });
+        });
     </script>
 
 @endsection
