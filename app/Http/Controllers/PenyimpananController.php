@@ -185,4 +185,25 @@ class PenyimpananController extends Controller
             'rak' => $kodeRakLengkap,
         ]);
     }
+
+    public function getDetailRak($kodeRak)
+    {
+        $rak = Rak::where('kode_rak', $kodeRak)->first();
+
+        if (!$rak) {
+            return response()->json(['error' => 'Rak tidak ditemukan.'], 404);
+        }
+
+        // Ambil data dari storage_details join dengan items
+        $details = DB::table('storage_details')
+            ->join('items', 'items.id', '=', 'storage_details.item_id')
+            ->select('items.kode_barang', 'items.nama_barang', 'items.satuan', 'storage_details.jumlah')
+            ->where('storage_details.rack_id', $rak->id)
+            ->get();
+
+        return response()->json([
+            'storage' => $details,
+        ]);
+    }
 }
+

@@ -1,6 +1,14 @@
 @extends('dashboard.main')
 
 @section('content')
+    <style>
+        svg:not(.apexcharts-svg):not(.chartjs-size-monitor),
+        .ti-arrow-left,
+        .ti-arrow-right {
+            display: none !important;
+        }
+    </style>
+
 
     <div class="container-fluid">
         <div class="card">
@@ -64,9 +72,10 @@
                     </div>
 
                     <!-- Pagination -->
-                    <div class="mt-3">
+                    <div class="d-flex justify-content-end">
                         {{ $logs->links() }}
                     </div>
+
                 </div>
             </div>
         </div>

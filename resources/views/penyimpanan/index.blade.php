@@ -274,14 +274,14 @@
 
         <!-- Modal Detail Rak -->
         <div class="modal fade" id="detailRakModal" tabindex="-1" aria-labelledby="detailRakModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="detailRakModalLabel">Detail Rak</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                     </div>
                     <div class="modal-body" id="modalRakContent">
-                        <!-- Konten dinamis diisi lewat JavaScript -->
+                        <p>Memuat data...</p>
                     </div>
                 </div>
             </div>
@@ -292,151 +292,167 @@
     <script>
         // Skrip JS untuk fitur penyimpanan dan pewarnaan rak
 
-function showDetail(el) {
-    const kodeRak = el.getAttribute('data-kode') || `${el.getAttribute('data-rak')}${el.getAttribute('data-level') === '1' ? 'L01' : 'L02'}`;
-    const popover = document.getElementById('rakPopover');
+        function showDetail(el) {
+            const kodeRak = el.getAttribute('data-kode') || (el.getAttribute('data-rak') + (el.getAttribute('data-level') === '1' ? 'L01' : 'L02'));
+            document.querySelectorAll('.grid-box').forEach(box => box.classList.remove('active'));
+            el.classList.add('active');
 
-    document.querySelectorAll('.grid-box').forEach(box => box.classList.remove('active'));
-    el.classList.add('active');
+            // Sembunyikan popover
+            document.getElementById('rakPopover').style.display = 'none';
 
-    popover.innerHTML = `
-        <p class="fw-bold text-success mb-1">Rak ${kodeRak}</p>
-        <small>Informasi rak ditampilkan di sini</small>
-        <div class="text-end mt-2"><small>Aktivitas terakhir: 20/05/2025</small></div>
-    `;
+            // Tampilkan modal
+            const modal = new bootstrap.Modal(document.getElementById('detailRakModal'));
+            modal.show();
 
-    const rect = el.getBoundingClientRect();
-    const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+            // Kosongkan dulu konten
+            const modalContent = document.getElementById('modalRakContent');
+            modalContent.innerHTML = '<p>Memuat data...</p>';
 
-    const popoverWidth = 240;
-    const offsetX = -240;
-    const offsetY = -5;
+            // Fetch data detail rak
+            fetch(`/penyimpanan/detail-rak/${kodeRak}`)
+                .then(response => {
+                    if (!response.ok) throw new Error('Gagal mengambil data.');
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.error) {
+                        modalContent.innerHTML = `<div class="alert alert-danger">${data.error}</div>`;
+                        return;
+                    }
 
-    let left = rect.right + scrollLeft + offsetX;
-    let top = rect.top + scrollTop + offsetY;
+                    if (data.storage.length === 0) {
+                        modalContent.innerHTML = `<p>Rak <strong>${kodeRak}</strong> kosong.</p>`;
+                    } else {
+                        let html = `<p><strong>Rak ${kodeRak}</strong></p>`;
+                        html += `<ul class="list-group">`;
+                        data.storage.forEach(item => {
+                            html += `<li class="list-group-item d-flex justify-content-between align-items-center">
+                ${item.nama_barang} (${item.kode_barang})
+                <span class="badge bg-primary rounded-pill">${item.jumlah} ${item.satuan}</span>
+              </li>`;
+                        });
+                        html += `</ul>`;
+                        modalContent.innerHTML = html;
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    modalContent.innerHTML = `<div class="alert alert-danger">Terjadi error saat mengambil data.</div>`;
+                });
+        }
 
-    if (rect.right + popoverWidth > window.innerWidth) {
-        left = rect.left + scrollLeft - popoverWidth - offsetX;
-    }
-
-    popover.style.display = 'block';
-    popover.style.top = `${top}px`;
-    popover.style.left = `${left}px`;
-}
-
-document.addEventListener('click', function (e) {
-    const popover = document.getElementById('rakPopover');
-    if (!popover.contains(e.target) && !e.target.classList.contains('grid-box')) {
-        popover.style.display = 'none';
-        document.querySelectorAll('.grid-box').forEach(box => box.classList.remove('active'));
-    }
-});
-
-function updateRakColors() {
-    document.querySelectorAll('.grid-box').forEach(box => {
-        const kodeRak = box.getAttribute('data-kode');
-        box.classList.remove('kosong', 'terpakai', 'penuh');
-
-        if (kodeRak && kapasitasRak[kodeRak] !== undefined) {
-            const kapasitas = kapasitasRak[kodeRak];
-            if (kapasitas <= 0) {
-                box.classList.add('penuh');
-            } else if (kapasitas < 4999) {
-                box.classList.add('terpakai');
-            } else {
-                box.classList.add('kosong');
+        document.addEventListener('click', function (e) {
+            const popover = document.getElementById('rakPopover');
+            if (!popover.contains(e.target) && !e.target.classList.contains('grid-box')) {
+                popover.style.display = 'none';
+                document.querySelectorAll('.grid-box').forEach(box => box.classList.remove('active'));
             }
-        } else {
-            box.classList.add('kosong');
-        }
-    });
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-    updateRakColors();
-
-    document.getElementById('rekomendasiForm').addEventListener('submit', function (e) {
-        e.preventDefault();
-
-        const itemName = document.getElementById('item_name').value.trim();
-        const quantity = document.getElementById('quantity').value.trim();
-
-        if (!itemName || !quantity || isNaN(quantity) || Number(quantity) <= 0) {
-            alert('Mohon isi data barang dan quantity dengan benar.');
-            return;
-        }
-
-        fetch('/rekomendasi-lokasi', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: JSON.stringify({ item_name: itemName, quantity })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) return alert('Error: ' + data.error);
-
-            const rakStr = data.recommended_rak;
-            if (!rakStr || rakStr.length < 5) return alert('Rekomendasi tidak valid.');
-
-            const rakHuruf = rakStr.charAt(0);
-            const no = rakStr.slice(1, 3);
-            const level = parseInt(rakStr.slice(4), 10);
-            if (isNaN(level)) return alert('Level tidak valid.');
-
-            document.getElementById('lokasiRak').innerText = `Rak ${rakHuruf}${no}, Level ${level}`;
-            document.getElementById('rekomendasiResult').classList.remove('d-none');
-
-            const btn = document.getElementById('taruhBarangBtn');
-            btn.classList.remove('d-none');
-            btn.setAttribute('data-rak', `${rakHuruf}${no}`);
-            btn.setAttribute('data-level', level);
-            btn.setAttribute('data-item-name', itemName);
-            btn.setAttribute('data-quantity', quantity);
-        })
-        .catch(err => {
-            console.error(err);
-            alert('Gagal mendapatkan rekomendasi.');
         });
-    });
 
-    document.getElementById('taruhBarangBtn').addEventListener('click', function () {
-        const rak = this.getAttribute('data-rak');
-        const level = this.getAttribute('data-level');
-        const rakKode = rak + (level === '1' ? 'L01' : 'L02');
+        function updateRakColors() {
+            document.querySelectorAll('.grid-box').forEach(box => {
+                const kodeRak = box.getAttribute('data-kode');
+                box.classList.remove('kosong', 'terpakai', 'penuh');
 
-        fetch('/penyimpanan/manual-placement', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: JSON.stringify({
-                item_name: this.getAttribute('data-item-name'),
-                quantity: this.getAttribute('data-quantity'),
-                rak: rakKode,
-                level: parseInt(level)
-            })
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.error) return alert('Error: ' + data.error);
+                if (kodeRak && kapasitasRak[kodeRak] !== undefined) {
+                    const kapasitas = kapasitasRak[kodeRak];
+                    if (kapasitas <= 0) {
+                        box.classList.add('penuh');
+                    } else if (kapasitas < 4999) {
+                        box.classList.add('terpakai');
+                    } else {
+                        box.classList.add('kosong');
+                    }
+                } else {
+                    box.classList.add('kosong');
+                }
+            });
+        }
 
-            kapasitasRak[rakKode] = data.kapasitas_tersedia;
+        document.addEventListener('DOMContentLoaded', function () {
             updateRakColors();
-            alert(data.success);
-            this.classList.add('d-none');
-            document.getElementById('rekomendasiResult').classList.add('d-none');
-        })
-        .catch(err => {
-            console.error(err);
-            alert('Gagal menyimpan data.');
+
+            document.getElementById('rekomendasiForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const itemName = document.getElementById('item_name').value.trim();
+                const quantity = document.getElementById('quantity').value.trim();
+
+                if (!itemName || !quantity || isNaN(quantity) || Number(quantity) <= 0) {
+                    alert('Mohon isi data barang dan quantity dengan benar.');
+                    return;
+                }
+
+                fetch('/rekomendasi-lokasi', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({ item_name: itemName, quantity })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) return alert('Error: ' + data.error);
+
+                        const rakStr = data.recommended_rak;
+                        if (!rakStr || rakStr.length < 5) return alert('Rekomendasi tidak valid.');
+
+                        const rakHuruf = rakStr.charAt(0);
+                        const no = rakStr.slice(1, 3);
+                        const level = parseInt(rakStr.slice(4), 10);
+                        if (isNaN(level)) return alert('Level tidak valid.');
+
+                        document.getElementById('lokasiRak').innerText = `Rak ${rakHuruf}${no}, Level ${level}`;
+                        document.getElementById('rekomendasiResult').classList.remove('d-none');
+
+                        const btn = document.getElementById('taruhBarangBtn');
+                        btn.classList.remove('d-none');
+                        btn.setAttribute('data-rak', `${rakHuruf}${no}`);
+                        btn.setAttribute('data-level', level);
+                        btn.setAttribute('data-item-name', itemName);
+                        btn.setAttribute('data-quantity', quantity);
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        alert('Gagal mendapatkan rekomendasi.');
+                    });
+            });
+
+            document.getElementById('taruhBarangBtn').addEventListener('click', function () {
+                const rak = this.getAttribute('data-rak');
+                const level = this.getAttribute('data-level');
+                const rakKode = rak + (level === '1' ? 'L01' : 'L02');
+
+                fetch('/penyimpanan/manual-placement', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({
+                        item_name: this.getAttribute('data-item-name'),
+                        quantity: this.getAttribute('data-quantity'),
+                        rak: rakKode,
+                        level: parseInt(level)
+                    })
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.error) return alert('Error: ' + data.error);
+
+                        kapasitasRak[rakKode] = data.kapasitas_tersedia;
+                        updateRakColors();
+                        alert(data.success);
+                        this.classList.add('d-none');
+                        document.getElementById('rekomendasiResult').classList.add('d-none');
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        alert('Gagal menyimpan data.');
+                    });
+            });
         });
-    });
-});
 
     </script>
 

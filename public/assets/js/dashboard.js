@@ -241,11 +241,11 @@ new ApexCharts(document.querySelector("#bar-april"), {
   series: [
     {
       name: 'Barang Masuk',
-      data: [13432]
+      data: window.barangChart ? window.barangChart.masuk : [0]
     },
     {
       name: 'Barang Keluar',
-      data: [2162]
+      data: window.barangChart ? window.barangChart.keluar : [0]
     }
   ],
   xaxis: {

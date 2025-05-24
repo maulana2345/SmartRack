@@ -8,6 +8,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\PenyimpananController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\LogController;
+use App\Http\Controllers\DashboardController;
 
 // Login
 Route::get('/', [HomeController::class, 'index']);
@@ -19,9 +20,10 @@ Route::get('/login', function () {
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Dashboard
-Route::get('/dashboard', function () {
-    return view('dashboard.index');
-})->middleware('auth');
+// Route::get('/dashboard', function () {
+//     return view('dashboard.index');
+// })->middleware('auth');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard.index');
 
 // Register routes
 Route::get('/register', [RegisterController::class, 'show'])->name('register');
@@ -43,3 +45,4 @@ Route::post('/rekomendasi-lokasi', [PenyimpananController::class, 'rekomendasiLo
 // Route::post('/penyimpanan/manual-placement', [PenyimpananController::class, 'storePlacement'])->name('penyimpanan.manualPlacement');
 Route::post('/penyimpanan/manual-placement', [PenyimpananController::class, 'storePlacement']);
 Route::post('/penyimpanan/hapus-barang', [PenyimpananController::class, 'removePlacement'])->name('penyimpanan.removePlacement');
+Route::get('/penyimpanan/detail-rak/{kodeRak}', [PenyimpananController::class, 'getDetailRak']);
