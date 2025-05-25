@@ -86,11 +86,11 @@
                                 <tr>
                                     <th>Kode Barang</th>
                                     <th>Nama Barang</th>
-                                    <th>Jumlah</th>
+                                    <th>Total QTY</th>
                                     <th>Tanggal Masuk</th>
-                                    <th>Tanggal Keluar</th>
+                                    <!-- <th>Tanggal Keluar</th> -->
                                     <th>Rak</th>
-                                    <th>Dibuat Pada</th>
+                                    <!-- <th>Dibuat Pada</th> -->
                                 </tr>
                             </thead>
                             <tbody>
@@ -100,9 +100,9 @@
                                         <td>{{ $log->nama_barang }}</td>
                                         <td>{{ $log->jumlah }}</td>
                                         <td>{{ $log->tgl_masuk }}</td>
-                                        <td>{{ $log->tgl_keluar ?? '-' }}</td>
+                                        <!-- <td>{{ $log->tgl_keluar ?? '-' }}</td> -->
                                         <td>{{ $log->kode_rak }}</td>
-                                        <td>{{ $log->created_at }}</td>
+                                        <!-- <td>{{ $log->created_at }}</td> -->
                                     </tr>
                                 @empty
                                     <tr>

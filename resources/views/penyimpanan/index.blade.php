@@ -29,6 +29,26 @@
             border-radius: 8px;
             cursor: pointer;
             transition: transform 0.2s;
+            position: relative;
+        }
+
+        .grid-box::after {
+            content: attr(data-kapasitas) ' tersedia';
+            display: none;
+            position: absolute;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #000;
+            color: #fff;
+            padding: 2px 6px;
+            font-size: 10px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        .grid-box:hover::after {
+            display: block;
         }
 
         .grid-box:hover {
@@ -115,7 +135,8 @@
                                     $no = str_pad(ceil($i / 2), 2, '0', STR_PAD_LEFT);
                                     $kodeRak = "{$row}{$no}{$level}"; // contoh A01L01, A01L02, A02L01, dll
                                 @endphp
-                                <div class="grid-box status-kosong" data-kode="{{ $kodeRak }}" onclick="showDetail(this)">
+                                <div class="grid-box" data-kode="{{ $kodeRak }}" data-kapasitas="{{ $kapasitasRak[$kodeRak] ?? 0 }}"
+                                    onclick="showDetail(this)">
                                 </div>
                             @endfor
                         </div>
@@ -135,7 +156,8 @@
                                     $no = str_pad(ceil($i / 2), 2, '0', STR_PAD_LEFT);
                                     $kodeRak = "{$row}{$no}{$level}"; // contoh: F01L01, F01L02, F02L01, dst.
                                 @endphp
-                                <div class="grid-box status-kosong" data-kode="{{ $kodeRak }}" onclick="showDetail(this)">
+                                <div class="grid-box" data-kode="{{ $kodeRak }}" data-kapasitas="{{ $kapasitasRak[$kodeRak] ?? 0 }}"
+                                    onclick="showDetail(this)">
                                 </div>
                             @endfor
                         </div>
@@ -198,8 +220,8 @@
                 <div class="row mb-2">
                     <div class="col">
                         <label class="form-label">Quantity</label>
-                        <input type="number" id="manual_quantity" name="quantity" class="form-control" placeholder="Contoh: 100"
-                            required>
+                        <input type="number" id="manual_quantity" name="quantity" class="form-control"
+                            placeholder="Contoh: 100" required>
                     </div>
                 </div>
                 <div class="row mb-2">
@@ -242,8 +264,8 @@
                 <div class="row mb-2">
                     <div class="col">
                         <label class="form-label">Quantity</label>
-                        <input type="number" id="hapus_quantity" name="quantity" class="form-control" placeholder="Contoh: 100"
-                            required>
+                        <input type="number" id="hapus_quantity" name="quantity" class="form-control"
+                            placeholder="Contoh: 100" required>
                     </div>
                 </div>
                 <div class="row mb-2">
@@ -327,9 +349,9 @@
                         html += `<ul class="list-group">`;
                         data.storage.forEach(item => {
                             html += `<li class="list-group-item d-flex justify-content-between align-items-center">
-                    ${item.nama_barang} (${item.kode_barang})
-                    <span class="badge bg-primary rounded-pill">${item.jumlah} ${item.satuan}</span>
-                  </li>`;
+                                        ${item.nama_barang} (${item.kode_barang})
+                                        <span class="badge bg-primary rounded-pill">${item.jumlah} ${item.satuan}</span>
+                                      </li>`;
                         });
                         html += `</ul>`;
                         modalContent.innerHTML = html;
@@ -396,12 +418,21 @@
                         if (data.error) return alert('Error: ' + data.error);
 
                         const rakStr = data.recommended_rak;
-                        if (!rakStr || rakStr.length < 5) return alert('Rekomendasi tidak valid.');
+                        if (!rakStr || rakStr === "NOT_FOUND") {
+                            alert('Tidak ada rak yang cukup. Coba kurangi quantity atau periksa dimensi barang.');
+                            return;
+                        }
 
                         const rakHuruf = rakStr.charAt(0);
                         const no = rakStr.slice(1, 3);
-                        const level = parseInt(rakStr.slice(4), 10);
-                        if (isNaN(level)) return alert('Level tidak valid.');
+
+                        // Pastikan level valid
+                        const levelStr = rakStr.slice(4);
+                        const level = parseInt(levelStr, 10);
+                        if (isNaN(level)) {
+                            alert('Level tidak valid.');
+                            return;
+                        }
 
                         document.getElementById('lokasiRak').innerText = `Rak ${rakHuruf}${no}, Level ${level}`;
                         document.getElementById('rekomendasiResult').classList.remove('d-none');

@@ -34,6 +34,7 @@ class PenyimpananController extends Controller
                 ], 404);
             }
 
+            $total_dimensi = $quantity * $item->dimensi;    
             $kategori = strtolower($item->category->tipe_kategori ?? 'fast');
             $rakData = Rak::select('kode_rak', 'kapasitas_tersedia', 'kapasitas_max', 'jarak')->get();
 
@@ -46,6 +47,7 @@ class PenyimpananController extends Controller
                 'kode_barang' => $item->kode_barang,
                 'kategori' => $kategori,
                 'stock' => $quantity,
+                'total_dimensi' => $total_dimensi,
                 'rak_list' => $rakData->toArray(),
             ]);
 
@@ -95,6 +97,10 @@ class PenyimpananController extends Controller
             return response()->json(['error' => 'Rak tidak ditemukan.'], 404);
         }
 
+        // Hitung total_dimensi barang yang dimasukkan
+        $totalDimensiInput = $quantity * $item->dimensi;
+
+        // Cek apakah sudah ada barang yang sama di rak
         $existing = DB::table('storage_details')
             ->where('rack_id', $rack->id)
             ->where('item_id', $item->id)
@@ -115,7 +121,15 @@ class PenyimpananController extends Controller
             ]);
         }
 
-        $rack->kapasitas_tersedia = max(0, $rack->kapasitas_tersedia - $quantity);
+        // Hitung total semua barang yang ada di rak sekarang (termasuk yang baru)
+        $totalDimensi = DB::table('storage_details')
+            ->join('items', 'items.id', '=', 'storage_details.item_id')
+            ->where('storage_details.rack_id', $rack->id)
+            ->select(DB::raw('SUM(storage_details.jumlah * items.dimensi) as total'))
+            ->first()->total ?? 0;
+
+        // Update kapasitas_tersedia
+        $rack->kapasitas_tersedia = max(0, $rack->kapasitas_max - $totalDimensi);
         $rack->save();
 
         return response()->json([
@@ -176,7 +190,14 @@ class PenyimpananController extends Controller
             DB::table('storage_details')->where('id', $storage->id)->delete();
         }
 
-        $rack->kapasitas_tersedia += $quantity;
+        // Hitung ulang total semua barang yang tersisa di rak
+        $totalDimensi = DB::table('storage_details')
+            ->join('items', 'items.id', '=', 'storage_details.item_id')
+            ->where('storage_details.rack_id', $rack->id)
+            ->select(DB::raw('SUM(storage_details.jumlah * items.dimensi) as total'))
+            ->first()->total ?? 0;
+
+        $rack->kapasitas_tersedia = max(0, $rack->kapasitas_max - $totalDimensi);
         $rack->save();
 
         return response()->json([
