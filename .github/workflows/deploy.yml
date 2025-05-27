@@ -31,8 +31,8 @@ jobs:
           sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=secret/' .env
           sed -i 's/DB_HOST=.*/DB_HOST=mysql/' .env
 
-      - name: Start create shared-network
-        run: docker network create shared-network
+      - name: Create Docker network
+        run: docker network create shared-network || echo "Network already exists"
 
       - name: Start Docker Compose
         run: docker compose up -d --build
@@ -61,23 +61,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install sshpass
-        run: sudo apt-get update && sudo apt-get install -y sshpass
-
-      - name: Setup SSH
+      - name: Setup SSH key
         run: |
-            mkdir -p ~/.ssh
-            echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_ed25519
-            chmod 600 ~/.ssh/id_ed25519
-            ssh-keyscan 134.209.96.95 >> ~/.ssh/known_hosts
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H 134.209.96.95 >> ~/.ssh/known_hosts
 
       - name: Deploy to VPS
-        env:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.DEPLOY_PASSWORD }}
         run: |
-          sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no root@134.209.96.95 << 'EOF'
+          ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no root@134.209.96.95 << 'EOF'
             set -e
 
             echo ">> Pulling latest code"
