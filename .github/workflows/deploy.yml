@@ -31,6 +31,9 @@ jobs:
           sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=secret/' .env
           sed -i 's/DB_HOST=.*/DB_HOST=mysql/' .env
 
+      - name: Start create shared-network
+        run: docker network create shared-network
+        
       - name: Start Docker Compose
         run: docker compose up -d --build
 
