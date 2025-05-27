@@ -31,13 +31,13 @@ jobs:
           sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=secret/' .env
           sed -i 's/DB_HOST=.*/DB_HOST=mysql/' .env
 
-      - name: Start Laravel app containers
+      - name: Start Docker Compose
         run: docker compose up -d --build
 
       - name: Install Composer dependencies
         run: docker compose exec -T app composer install
 
-      - name: Generate application key
+      - name: Generate key
         run: docker compose exec -T app php artisan key:generate
 
       - name: Run migrations
@@ -51,7 +51,6 @@ jobs:
         run: docker compose down
 
   deploy:
-    name: Deploy to VPS
     needs: laravel-tests
     runs-on: ubuntu-latest
 
@@ -62,30 +61,26 @@ jobs:
       - name: Install sshpass
         run: sudo apt-get update && sudo apt-get install -y sshpass
 
-      - name: Deploy to VPS using SSH password
+      - name: Deploy to VPS
         env:
           SSH_PASSWORD: ${{ secrets.DEPLOY_PASSWORD }}
         run: |
           sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no root@134.209.96.95 << 'EOF'
             set -e
 
+            echo ">> Pulling latest code"
             cd /var/www/SmartRack
-
-            echo "Pulling latest code..."
             git pull origin main
 
-            echo "Checking Docker network..."
+            echo ">> Ensuring Docker network exists"
             docker network inspect shared-network >/dev/null 2>&1 || docker network create shared-network
 
-            echo "Rebuilding containers..."
+            echo ">> Rebuilding containers"
             docker compose down
             docker compose up -d --build
 
-            echo "Running Laravel commands..."
-            docker compose exec -T app composer install --no-interaction --prefer-dist --optimize-autoloader
+            echo ">> Running Laravel optimization commands"
             docker compose exec -T app php artisan migrate --force
             docker compose exec -T app php artisan config:cache
             docker compose exec -T app php artisan route:cache
-
-            echo "Deployment completed!"
           EOF
