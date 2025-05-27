@@ -67,4 +67,4 @@ jobs:
           script: |
             cd /var/www/SmartRack
             git pull
-            docker compose up -d --build
+            docker-compose up -d --build
