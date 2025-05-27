@@ -31,6 +31,11 @@ jobs:
           sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=secret/' .env
           sed -i 's/DB_HOST=.*/DB_HOST=mysql/' .env
 
+      - name: Create Docker network
+        run: |
+          docker network inspect shared-network >/dev/null 2>&1 || \
+          docker network create shared-network
+
       - name: Start Docker Compose
         run: docker compose up -d --build
 
@@ -70,6 +75,10 @@ jobs:
           ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} << 'EOF'
             cd /var/www/SmartRack
             git pull origin main
+
+            docker network inspect shared-network >/dev/null 2>&1 || \
+            docker network create shared-network
+
             docker compose down
             docker compose up -d --build
             docker compose exec -T app php artisan migrate --force
