@@ -54,46 +54,16 @@ jobs:
         run: docker compose down
 
   deploy:
-    needs: laravel-tests
+    needs: build
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup SSH key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -H 134.209.96.95 >> ~/.ssh/known_hosts
-      - name: Deploy to VPS
-        env:
-          SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
-        run: |
-          mkdir -p ~/.ssh
-          echo "$SSH_KEY" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -H 134.209.96.95 >> ~/.ssh/known_hosts
-
-          ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no root@134.209.96.95 << 'EOF'
-            set -e
-
-            echo ">> Pulling latest code"
-            cd /var/www/SmartRack
-            git reset --hard HEAD
-            git clean -fd
-            git pull origin main
-
-            echo ">> Ensuring Docker network exists"
-            docker network inspect shared-network >/dev/null 2>&1 || docker network create shared-network
-
-            echo ">> Rebuilding containers"
-            docker compose down
+      - name: Pull Docker image
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: |
+            cd SmartRack
+            git pull
             docker compose up -d --build
-
-            echo ">> Running Laravel optimization commands"
-            docker compose exec -T app php artisan migrate --force
-            docker compose exec -T app php artisan config:cache
-            docker compose exec -T app php artisan route:cache
-          EOF
