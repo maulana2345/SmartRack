@@ -1,0 +1,78 @@
+name: Laravel CI/CD
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  laravel-tests:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_DATABASE: SmartRack
+          MYSQL_ROOT_PASSWORD: secret
+          MYSQL_USER: laravel
+          MYSQL_PASSWORD: secret
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set environment
+        run: |
+          cp .env.example .env
+          sed -i 's/DB_DATABASE=.*/DB_DATABASE=SmartRack/' .env
+          sed -i 's/DB_USERNAME=.*/DB_USERNAME=laravel/' .env
+          sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=secret/' .env
+          sed -i 's/DB_HOST=.*/DB_HOST=mysql/' .env
+
+      - name: Start Docker Compose
+        run: docker-compose up -d --build
+
+      - name: Install Composer dependencies
+        run: docker-compose exec -T app composer install
+
+      - name: Generate key
+        run: docker-compose exec -T app php artisan key:generate
+
+      - name: Run migrations
+        run: docker-compose exec -T app php artisan migrate --force
+
+      - name: Run tests
+        run: docker-compose exec -T app php artisan test
+
+      - name: Stop containers
+        if: always()
+        run: docker-compose down
+
+  deploy:
+    needs: laravel-tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to VPS
+        run: |
+          ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} << 'EOF'
+            cd /var/www/SmartRack
+            git pull origin main
+            docker-compose down
+            docker-compose up -d --build
+            docker-compose exec -T app php artisan migrate --force
+            docker-compose exec -T app php artisan config:cache
+            docker-compose exec -T app php artisan route:cache
+          EOF
