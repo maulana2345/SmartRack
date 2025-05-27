@@ -73,7 +73,9 @@ jobs:
 
       - name: Deploy to VPS
         env:
-          SSH_PASSWORD: ${{ secrets.DEPLOY_PASSWORD }}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.DEPLOY_PASSWORD }}
         run: |
           sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no root@134.209.96.95 << 'EOF'
             set -e
