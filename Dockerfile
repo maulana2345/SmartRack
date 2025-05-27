@@ -36,7 +36,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
     && npm run build || true
 
 # Salin konfigurasi nginx
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY default.conf /etc/nginx/conf.d/default.conf
 
 # Salin entrypoint
 COPY entrypoint.sh /entrypoint.sh
