@@ -32,23 +32,23 @@ jobs:
           sed -i 's/DB_HOST=.*/DB_HOST=mysql/' .env
 
       - name: Start Docker Compose
-        run: docker-compose up -d --build
+        run: docker compose up -d --build
 
       - name: Install Composer dependencies
-        run: docker-compose exec -T app composer install
+        run: docker compose exec -T app composer install
 
       - name: Generate key
-        run: docker-compose exec -T app php artisan key:generate
+        run: docker compose exec -T app php artisan key:generate
 
       - name: Run migrations
-        run: docker-compose exec -T app php artisan migrate --force
+        run: docker compose exec -T app php artisan migrate --force
 
       - name: Run tests
-        run: docker-compose exec -T app php artisan test
+        run: docker compose exec -T app php artisan test
 
       - name: Stop containers
         if: always()
-        run: docker-compose down
+        run: docker compose down
 
   deploy:
     needs: laravel-tests
