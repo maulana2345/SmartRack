@@ -31,11 +31,6 @@ jobs:
           sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=secret/' .env
           sed -i 's/DB_HOST=.*/DB_HOST=mysql/' .env
 
-      - name: Create Docker network
-        run: |
-          docker network inspect shared-network >/dev/null 2>&1 || \
-          docker network create shared-network
-
       - name: Start Docker Compose
         run: docker compose up -d --build
 
@@ -63,21 +58,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
+      - name: Install sshpass
+        run: sudo apt-get update && sudo apt-get install -y sshpass
 
-      - name: Deploy to VPS
+      - name: Deploy to VPS using password
+        env:
+          SSH_PASSWORD: ${{ secrets.DEPLOY_PASSWORD }}
         run: |
-          ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} << 'EOF'
+          sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no root@134.209.96.95 << 'EOF'
             cd /var/www/SmartRack
             git pull origin main
 
-            docker network inspect shared-network >/dev/null 2>&1 || \
-            docker network create shared-network
+            # Pastikan shared-network sudah ada, buat jika belum
+            docker network inspect shared-network >/dev/null 2>&1 || docker network create shared-network
 
             docker compose down
             docker compose up -d --build
