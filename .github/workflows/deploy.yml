@@ -67,15 +67,22 @@ jobs:
           echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H 134.209.96.95 >> ~/.ssh/known_hosts
-
-
       - name: Deploy to VPS
+        env:
+          SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
         run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H 134.209.96.95 >> ~/.ssh/known_hosts
+
           ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no root@134.209.96.95 << 'EOF'
             set -e
 
             echo ">> Pulling latest code"
             cd /var/www/SmartRack
+            git reset --hard HEAD
+            git clean -fd
             git pull origin main
 
             echo ">> Ensuring Docker network exists"
