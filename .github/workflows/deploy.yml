@@ -65,6 +65,6 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
-            cd elibrary
+            cd SmartRack
             git pull
             docker compose up -d --build
