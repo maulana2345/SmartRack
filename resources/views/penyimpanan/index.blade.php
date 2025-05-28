@@ -33,7 +33,7 @@
         }
 
         .grid-box::after {
-            content: attr(data-kapasitas) ' tersedia';
+            content: attr(data-kapasitas);
             display: none;
             position: absolute;
             bottom: 110%;
@@ -45,7 +45,38 @@
             font-size: 10px;
             border-radius: 4px;
             white-space: nowrap;
+            z-index: 10;
         }
+
+        .grid-box .tooltip-box {
+            display: none;
+            position: absolute;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #000;
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            z-index: 10;
+            white-space: nowrap;
+            text-align: left;
+        }
+
+        .grid-box:hover .tooltip-box {
+            display: block;
+        }
+
+        .tooltip-title {
+            font-weight: bold;
+        }
+
+        .tooltip-body {
+            margin-top: 2px;
+            font-size: 10px;
+        }
+
 
         .grid-box:hover::after {
             display: block;
@@ -135,8 +166,11 @@
                                     $no = str_pad(ceil($i / 2), 2, '0', STR_PAD_LEFT);
                                     $kodeRak = "{$row}{$no}{$level}"; // contoh A01L01, A01L02, A02L01, dll
                                 @endphp
-                                <div class="grid-box" data-kode="{{ $kodeRak }}" data-kapasitas="{{ $kapasitasRak[$kodeRak] ?? 0 }}"
-                                    onclick="showDetail(this)">
+                                <div class="grid-box" data-kode="{{ $kodeRak }}" onclick="showDetail(this)">
+                                    <div class="tooltip-box">
+                                        <div class="tooltip-title">Rak {{ $kodeRak }}</div>
+                                        <div class="tooltip-body">Kapasitas tersedia: {{ $kapasitasRak[$kodeRak] ?? 0 }} m³</div>
+                                    </div>
                                 </div>
                             @endfor
                         </div>
@@ -156,7 +190,8 @@
                                     $no = str_pad(ceil($i / 2), 2, '0', STR_PAD_LEFT);
                                     $kodeRak = "{$row}{$no}{$level}"; // contoh: F01L01, F01L02, F02L01, dst.
                                 @endphp
-                                <div class="grid-box" data-kode="{{ $kodeRak }}" data-kapasitas="{{ $kapasitasRak[$kodeRak] ?? 0 }}"
+                                <div class="grid-box" data-kode="{{ $kodeRak }}"
+                                    data-kapasitas="Rak {{ $kodeRak }} - Kapasitas tersedia {{ $kapasitasRak[$kodeRak] ?? 0 }} m³"
                                     onclick="showDetail(this)">
                                 </div>
                             @endfor
@@ -342,21 +377,29 @@
                         return;
                     }
 
+                    let html = `
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div><strong>Rak ${kodeRak}</strong></div>
+                            <div><strong>Kapasitas tersedia: ${data.kapasitas_tersedia} m³</strong></div>
+                        </div>
+                        `;
+
                     if (data.storage.length === 0) {
-                        modalContent.innerHTML = `<p>Rak <strong>${kodeRak}</strong> kosong.</p>`;
+                        html += `<p>Rak kosong.</p>`;
                     } else {
-                        let html = `<p><strong>Rak ${kodeRak}</strong></p>`;
                         html += `<ul class="list-group">`;
                         data.storage.forEach(item => {
                             html += `<li class="list-group-item d-flex justify-content-between align-items-center">
-                                        ${item.nama_barang} (${item.kode_barang})
-                                        <span class="badge bg-primary rounded-pill">${item.jumlah} ${item.satuan}</span>
-                                      </li>`;
+                                ${item.nama_barang} (${item.kode_barang})
+                                <span class="badge bg-primary rounded-pill">${item.jumlah} ${item.satuan}</span>
+                                </li>`;
                         });
                         html += `</ul>`;
-                        modalContent.innerHTML = html;
                     }
+
+                    modalContent.innerHTML = html;
                 })
+
                 .catch(error => {
                     console.error(error);
                     modalContent.innerHTML = `<div class="alert alert-danger">Terjadi error saat mengambil data.</div>`;

@@ -224,6 +224,7 @@ class PenyimpananController extends Controller
 
         return response()->json([
             'storage' => $details,
+            'kapasitas_tersedia' => $rak->kapasitas_tersedia  // Tambahkan ini!
         ]);
     }
 }
