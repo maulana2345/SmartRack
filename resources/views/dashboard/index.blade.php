@@ -20,13 +20,13 @@
         <h6 class="text-muted mb-2">Total barang keseluruhan</h6>
         <h2 class="fw-bold mb-2">{{ $data['total_barang'] }}</h2>
         <div class="d-flex justify-content-between small text-muted mb-1">
-        <span>Fast moving</span><span>{{ $data['fast_moving'] }}</span>
+        <span>Fast moving Barang</span><span>{{ $data['fast_moving'] }}</span>
         </div>
         <div class="progress mb-3" style="height: 30px;">
         <div class="progress-bar bg-primary" role="progressbar" style="width: {{ $data['fast_percent'] }}%"></div>
         </div>
         <div class="d-flex justify-content-between small text-muted mb-1">
-        <span>Slow movingg</span><span>{{ $data['slow_moving'] }}</span>
+        <span>Slow moving</span><span>{{ $data['slow_moving'] }}</span>
         </div>
         <div class="progress" style="height: 30px;">
         <div class="progress-bar bg-warning" role="progressbar" style="width: {{ $data['slow_percent'] }}%"></div>
