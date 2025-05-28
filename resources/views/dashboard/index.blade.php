@@ -26,7 +26,7 @@
         <div class="progress-bar bg-primary" role="progressbar" style="width: {{ $data['fast_percent'] }}%"></div>
         </div>
         <div class="d-flex justify-content-between small text-muted mb-1">
-        <span>Slow moving</span><span>{{ $data['slow_moving'] }}</span>
+        <span>Slow movingg</span><span>{{ $data['slow_moving'] }}</span>
         </div>
         <div class="progress" style="height: 30px;">
         <div class="progress-bar bg-warning" role="progressbar" style="width: {{ $data['slow_percent'] }}%"></div>
