@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Item;
 use App\Models\Rak;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class PenyimpananTest extends TestCase
 {
@@ -57,6 +58,12 @@ class PenyimpananTest extends TestCase
             'kapasitas_tersedia' => 5000,
             'jarak' => 199,
         ]);
+
+        Http::fake([
+        'http://127.0.0.1:5000/api/rekomendasi' => Http::response([
+            'recommended_rak' => ['A01L01', 'A02L02']
+        ], 200),
+    ]);
 
         // Panggil endpoint rekomendasi
         $response = $this->actingAs($user)->post('/rekomendasi-lokasi', [
