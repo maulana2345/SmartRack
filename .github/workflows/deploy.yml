@@ -14,10 +14,10 @@ jobs:
         ports:
           - 3306:3306
         env:
-          MYSQL_DATABASE: SmartRack
-          MYSQL_ROOT_PASSWORD: secret
+          MYSQL_DATABASE: nama_database_test
+          MYSQL_ROOT_PASSWORD: SmartRack2025!
           MYSQL_USER: laravel
-          MYSQL_PASSWORD: secret
+          MYSQL_PASSWORD: root
 
     steps:
       - name: Checkout code
@@ -26,10 +26,10 @@ jobs:
       - name: Set environment
         run: |
           cp .env.example .env
-          sed -i 's/DB_DATABASE=.*/DB_DATABASE=SmartRack/' .env
+          sed -i 's/DB_DATABASE=.*/DB_DATABASE=nama_database_test/' .env
           sed -i 's/DB_USERNAME=.*/DB_USERNAME=laravel/' .env
-          sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=secret/' .env
-          sed -i 's/DB_HOST=.*/DB_HOST=mysql/' .env
+          sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=SmartRack2025!/' .env
+          sed -i 's/DB_HOST=.*/DB_HOST=127.0.0.1/' .env
 
       - name: Create Docker network
         run: docker network create shared-network || echo "Network already exists"
