@@ -146,7 +146,7 @@
                                     <th>Kelompok</th>
                                     <th>Jenis</th>
                                     <th>Satuan</th>
-                                    <th>QTY</th>
+                                    <!-- <th>QTY</th> -->
                                     <th>Dimensi</th>
                                     <th>Kategori</th>
                                     <th>Tgl Kadaluarsa</th>
@@ -161,7 +161,7 @@
                                         <td>{{ $item->kelompok }}</td>
                                         <td>{{ $item->jenis }}</td>
                                         <td>{{ $item->satuan }}</td>
-                                        <td>{{ $item->qty }}</td>
+                                        <!-- <td>{{ $item->qty }}</td> -->
                                         <td>{{ $item->dimensi }}</td>
                                         <td>{{ $item->category ? $item->category->tipe_kategori : 'N/A' }}</td>
                                         <!-- Menampilkan kategori -->

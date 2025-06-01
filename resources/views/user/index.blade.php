@@ -28,7 +28,7 @@
                                 </div>
 
                                 <!-- Role Filter -->
-                                <div class="col-md-3">
+                                <!-- <div class="col-md-3">
                                     <label class="form-label">Role</label>
                                     <select name="role" class="form-select">
                                         <option value="">Semua</option>
@@ -38,7 +38,7 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                </div>
+                                </div> -->
 
                                 <!-- Submit -->
                                 <div class="col-md-2">
@@ -54,7 +54,7 @@
                                 <tr>
                                     <th>Nama Pengguna</th>
                                     <th>Email</th>
-                                    <th>Role</th>
+                                    <!-- <th>Role</th> -->
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -63,7 +63,7 @@
                                     <tr>
                                         <td>{{ $user->nama_pengguna }}</td>
                                         <td>{{ $user->email }}</td>
-                                        <td>{{ ucfirst($user->role) }}</td>
+                                        <!-- <td>{{ ucfirst($user->role) }}</td> -->
                                         <td>
                                             <a href="{{ route('user.edit', $user->id) }}" class="btn btn-sm btn-warning"
                                                 title="Edit">

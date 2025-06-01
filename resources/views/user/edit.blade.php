@@ -7,6 +7,7 @@
         @csrf @method('PUT')
         @include('user.form', ['user' => $user])
         <button class="btn btn-warning">Update</button>
+        <a href="{{ route('user.index') }}" class="btn btn-secondary">Batal</a>
     </form>
 </div>
 @endsection

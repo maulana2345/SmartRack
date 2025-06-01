@@ -7,6 +7,7 @@
         @csrf
         @include('user.form')
         <button class="btn btn-primary">Simpan</button>
+        <a href="{{ route(name: 'user.index') }}" class="btn btn-secondary">Batal</a>
     </form>
 </div>
 @endsection
