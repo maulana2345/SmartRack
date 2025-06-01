@@ -190,9 +190,11 @@
                                     $no = str_pad(ceil($i / 2), 2, '0', STR_PAD_LEFT);
                                     $kodeRak = "{$row}{$no}{$level}"; // contoh: F01L01, F01L02, F02L01, dst.
                                 @endphp
-                                <div class="grid-box" data-kode="{{ $kodeRak }}"
-                                    data-kapasitas="Rak {{ $kodeRak }} - Kapasitas tersedia {{ $kapasitasRak[$kodeRak] ?? 0 }} m³"
-                                    onclick="showDetail(this)">
+                                <div class="grid-box" data-kode="{{ $kodeRak }}" onclick="showDetail(this)">
+                                    <div class="tooltip-box">
+                                        <div class="tooltip-title">Rak {{ $kodeRak }}</div>
+                                        <div class="tooltip-body">Kapasitas tersedia: {{ $kapasitasRak[$kodeRak] ?? 0 }} m³</div>
+                                    </div>
                                 </div>
                             @endfor
                         </div>
