@@ -65,18 +65,20 @@
                         </a>
 
                         <!-- Tombol Import Excel -->
-                        <form action="#" method="POST" enctype="multipart/form-data">
+                        <!-- Tombol Import CSV -->
+                        <form action="{{ route('barang.import') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <label for="importExcel" class="btn btn-warning mb-0">
                                 <i class="fas fa-file-import me-1"></i> Import CSV
                             </label>
-                            <input type="file" id="importExcel" name="file" accept=".xlsx,.xls" style="display:none"
+                            <input type="file" id="importExcel" name="file" accept=".csv" style="display:none"
                                 onchange="this.form.submit()">
                         </form>
+
                         <!-- Tombol Export Excel -->
-                        <a href="#" class="btn btn-success text-white">
-                            <i class="fas fa-file-export me-1"></i> Export CSV
-                        </a>
+                        <!-- <a href="#" class="btn btn-success text-white">
+                                <i class="fas fa-file-export me-1"></i> Export CSV
+                            </a> -->
                     </div>
 
                     <!-- TABEL -->

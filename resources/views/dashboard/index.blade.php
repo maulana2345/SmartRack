@@ -103,7 +103,7 @@
         <th>Nama Barang</th>
         <th>Jumlah</th>
         <th>Tanggal Masuk</th>
-        <th>Tanggal Keluar</th>
+        <!-- <th>Tanggal Keluar</th> -->
         <th>Rak</th>
       </tr>
       </thead>
@@ -114,7 +114,7 @@
       <td>{{ $row->nama_barang }}</td>
       <td>{{ $row->jumlah }}</td>
       <td>{{ $row->tgl_masuk }}</td>
-      <td>{{ $row->tgl_keluar ?? '-' }}</td>
+      <!-- <td>{{ $row->tgl_keluar ?? '-' }}</td> -->
       <td>{{ $row->kode_rak }}</td>
       </tr>
     @empty

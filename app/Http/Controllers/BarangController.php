@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 class BarangController extends Controller
@@ -107,5 +109,53 @@ class BarangController extends Controller
         $item->delete();
 
         return redirect()->route('barang.index')->with('success', 'Data berhasil dihapus!');
+    }
+
+    // === Tambahan untuk Import CSV ===
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:csv,txt',
+        ]);
+
+        $file = $request->file('file');
+        $path = $file->getRealPath();
+        $data = array_map('str_getcsv', file($path));
+
+        $header = array_map('strtolower', $data[0]);
+        unset($data[0]);
+
+        DB::beginTransaction();
+        try {
+            foreach ($data as $row) {
+                $row = array_combine($header, $row);
+
+                // Validasi category_id
+                if (!Category::find($row['category_id'])) {
+                    throw new \Exception('Kategori dengan ID ' . $row['category_id'] . ' tidak ditemukan!');
+                }
+
+                // Insert or update berdasarkan kode_barang
+                Item::updateOrCreate(
+                    ['kode_barang' => $row['kode_barang']],
+                    [
+                        'category_id' => $row['category_id'],
+                        'nama_barang' => $row['nama_barang'],
+                        'satuan' => $row['satuan'],
+                        'kelompok' => $row['kelompok'],
+                        'jenis' => $row['jenis'],
+                        'tgl_kadaluarsa' => $row['tgl_kadaluarsa'],
+                        'qty' => $row['qty'],
+                        'dimensi' => $row['dimensi'],
+                        'updated_at' => now(),
+                    ]
+                );
+            }
+            DB::commit();
+            return redirect()->route('barang.index')->with('success', 'Import CSV berhasil!');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return back()->with('error', 'Gagal import: ' . $e->getMessage());
+        }
     }
 }

@@ -46,3 +46,5 @@ Route::post('/rekomendasi-lokasi', [PenyimpananController::class, 'rekomendasiLo
 Route::post('/penyimpanan/manual-placement', [PenyimpananController::class, 'storePlacement']);
 Route::post('/penyimpanan/hapus-barang', [PenyimpananController::class, 'removePlacement'])->name('penyimpanan.removePlacement');
 Route::get('/penyimpanan/detail-rak/{kodeRak}', [PenyimpananController::class, 'getDetailRak']);
+
+Route::post('/barang/import', [BarangController::class, 'import'])->name('barang.import');
