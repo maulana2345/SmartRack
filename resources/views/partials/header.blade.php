@@ -29,9 +29,9 @@
                                 <li class="nav-item">
                                     <a class="page-scroll" href="#why">FAQ</a>
                                 </li>
-                                <li class="nav-item">
+                                <!-- <li class="nav-item">
                                     <a class="page-scroll" href="#">Tentang</a>
-                                </li>
+                                </li> -->
                                 <!-- <li class="nav-item">
                                     <a href="/register">Daftar</a>
                                 </li> -->

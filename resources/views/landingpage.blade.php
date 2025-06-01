@@ -38,8 +38,8 @@
                             Lebih <em>Smart!</em>
                         </h1>
                         <p class="wow fadeInUp" data-wow-delay=".6s">
-                            Sistem manajemen gudang berbasis AI yang membuat gudang lebih rapi, efisien, dan
-                            produktif. Lebih cepat, lebih rapi, lebih smart!
+                            Sistem manajemen barang di rak Gudang berbasis Artificial Intelligence yang membuat barang di gudang tersusun lebih rapi, efisien, dan
+                            produktif.
                         </p>
                         <a href="/dashboard" data-bs-toggle="modal" data-bs-target="#loginModal" class="main-btn border-btn btn-hover wow fadeInUp" data-wow-delay=".6s">Mulai
                             Sekarang!</a>

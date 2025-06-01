@@ -22,7 +22,7 @@ class DashboardController extends Controller
             ->join('items', 'storage_details.item_id', '=', 'items.id')
             ->join('racks', 'storage_details.rack_id', '=', 'racks.id')
             ->orderByDesc('storage_details.created_at')
-            ->limit(7)
+            ->limit(8)
             ->select(
                 'items.kode_barang',
                 'items.nama_barang',

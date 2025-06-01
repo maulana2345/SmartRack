@@ -293,15 +293,26 @@ new ApexCharts(document.querySelector("#sales-chart"), {
 // Pie Fast
 new ApexCharts(document.querySelector("#pie-fast"), {
   chart: { type: 'donut' },
-  series: [44, 25, 15, 16],
-  labels: ['Benih', 'Pupuk', 'Obat', 'Makanan'],
-  colors: ['#1e88e5', '#26c6da', '#745af2', '#f1c40f']
+  series: [44, 25, 15],
+  labels: ['Benih', 'Pupuk', 'Obat'],
+  colors: ['#FF6666', '#6699FF', '#66CC66']
 }).render();
 
 // Pie Slow
 new ApexCharts(document.querySelector("#pie-slow"), {
   chart: { type: 'donut' },
-  series: [20, 30, 25, 25],
-  labels: ['Benih', 'Pupuk', 'Obat', 'Makanan'],
-  colors: ['#ff5c8e', '#26c6da', '#745af2', '#f1c40f']
+  series: [20, 30, 25],
+  labels: ['Benih', 'Pupuk', 'Obat'],
+  colors: ['#FF6666', '#6699FF', '#66CC66']
 }).render();
+
+  // =====================================
+  // Pie Barang Berdasarkan Kategori
+  // =====================================
+  new ApexCharts(document.querySelector("#pie-kategori"), {
+    chart: { type: 'donut' },
+    series: [44, 25, 15],
+    labels: ['Benih', 'Pupuk', 'Obat'],
+    colors: ['#1e88e5', '#f1c40f', '#745af2'],
+  }).render();
+
